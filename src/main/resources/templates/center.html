@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .fixed-height-div {
+            /* Set the desired height of the div */
+            width: 20px;
+            height: 60px;
+            /* overflow: hidden;*/
+            position: relative;
+        }
+
+        .fixed-height-div p {
+            position: absolute;
+            bottom: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="p-5">
+        <div class="row m-4">
+            <div th:if="${groupId}"
+                 th:style="${groupId==group.getId()? 'background-color: #6610f2;height: 20vh' : 'background-color: #b1dfbb;height: 20vh'}"
+                 th:each="group: ${groups}" class="btn col my-1 mx-2 p-2 card">
+                <form action="/center">
+                    <input type="hidden" name="groupId" th:value="${group.getId()}">
+                    <button class="text-white" th:text="${group.getName()}"
+                            style="width: 100%;height: 100%;background-color: black"></button>
+                </form>
+            </div>
+            <div th:unless="${groupId}" style="background-color: #b1dfbb;height: 20vh" th:each="group: ${groups}"
+                 class="btn col my-1 mx-2 p-2 card">
+                <form action="/center">
+                    <input type="hidden" name="groupId" th:value="${group.getId()}">
+                    <button class="text-white" th:text="${group.getName()}"
+                            style="width: 100%;height: 100%;background-color: black"></button>
+                </form>
+            </div>
+        </div>
+        <div>
+            <div class="" style="margin-left: 54px">
+                <form action="/timeTable/add">
+                    <input type="hidden" name="groupId" th:value="${groupId}">
+                    <input th:if="${timeTable}" type="hidden" name="timeTableId" th:value="${timeTable.getId()}">
+                    <button class="btn text-dark card btn-danger">+</button>
+                </form>
+            </div>
+            <div th:if="${timeTable}" class="row">
+                <div class="col my-1 mx-lg-5">
+                    <form action="/center" method="get">
+                        <div class="row">
+                            <div class="col">
+                                <label>
+                                    <select name="timeTableId" class="custom-select">
+                                        <option th:if="${timeTables}" th:each="timeTable: ${timeTables}"
+                                                th:text="${timeTable.getName()}"
+                                                th:value="${timeTable.getId()}">
+                                        </option>
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <input type="hidden" name="groupId" th:value="${groupId}">
+                                <button class="btn bg-secondary card">ok</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div th:if="${timeTable.getStatus().equals('START')}" th:each="lesson:${lessons}"
+                     class="col card my-1 mx-2"
+                     style="background-color: #abdde5">
+                    <div class="row">
+                        <div class="mx-3" style="margin-top: 20px"><p th:text="${lesson.getOrderLesson()}"></p></div>
+                        <div><b th:text="${lesson.getLocalDateTime().getDayOfWeek().name().substring(0, 3)}"
+                                style="font-size: 0.6em;"></b></div>
+                    </div>
+                    <div>
+                        <p th:text="${lesson.getLocalDateTime().getDayOfMonth()+'/'+lesson.getLocalDateTime().getMonthValue()+'/'+lesson.getLocalDateTime().getYear()}"
+                           style="font-size: 0.6em;"></p>
+                    </div>
+                </div>
+                <!-- cdsc cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc-->
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>1</p></div>
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>2</p></div>
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>3</p></div>
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>4</p></div>
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>5</p></div>
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>6</p></div>
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>7</p></div>
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>8</p></div>
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>9</p></div>
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>10</p></div>
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>11</p></div>
+                <div th:if="${timeTable.getStatus().equals('STOP')}" class="col card my-1 mx-2"
+                     style="background-color: #abdde5"><p>1322</p></div>
+            </div>
+            <div class="row">
+                <div class="col offset-5 my-1 mx-3" style="height: 6vh">
+                    <form th:if="${timeTable}" action="/lesson/start" method="post">
+                        <button th:if="${timeTable.getStatus().equals('START')}" name="timeTableId"
+                                th:text="${'Start lesson '+(timeTable.getCurrentLessonOrder()+1)}"
+                                th:value="${timeTable.getId()}"
+                                class="btn btn-dark mx-3">
+                        </button>
+                        <div th:if="${timeTable.getStatus().equals('STOP')}">
+                            <div th:each="timeTableStudent: ${timeTableStudents}">
+                                <p th:text="${timeTableStudent.getStudent().firstName+' '+timeTableStudent.getStudent().lastName}"></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div th:if="${timeTable.getStatus().equals('START')}"
+                 th:each="timeTableStudentAndAttendance:  ${timeTableStudentAndAttendances}" class="row">
+                <div class="col my-1 mx-lg-5">
+                    <div class="fixed-height-div">
+                        <p th:text="${timeTableStudentAndAttendance.timeTableStudent().getStudent().firstName+' '+timeTableStudentAndAttendance.timeTableStudent().getStudent().lastName}">
+                        </p>
+                    </div>
+                </div>
+                <div th:each="studentAttendance: ${timeTableStudentAndAttendance.studentAttendances()}"
+                     class="col card  my-1 mx-2">
+                    <form action="/lesson/has" method="post">
+                        <button th:disabled="${studentAttendance.getLesson().getOrderLesson()!=studentAttendance.getTimeTableStudent().getTimeTable().getCurrentLessonOrder()}"
+                                name="studentAttendanceId" th:value="${studentAttendance.getId()}"
+                                th:class="${studentAttendance.isHasLesson()? 'bg-success card-body': 'bg-secondary card-body' }"
+                                style="border-radius: 50%;width: 100%; height: 100%;">
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div th:if="${timeTable}">
+                <div class="row" th:if="${timeTable.getStatus().equals('STOP')}">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col">
+                            </div>
+                            <div class="col">
+                                <div>
+                                    <a th:href="|/student/add?timeTableId=${timeTable.getId()}&groupId=${groupId}|">
+                                        <div class="btn bg-info btn-lg">+<span>add student</span></div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-8"
+                         style="offset: 40vh">
+                        <form action="/timeTable/start" method="post">
+                            <input type="hidden" name="timeTableId" th:value="${timeTable.getId()}">
+                            <input type="hidden" name="groupId" th:value="${groupId}">
+                            <button class="btn  bg-danger card btn-dark">
+                                <h1><b>Start time table</b></h1>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="m-lg-5">
+    <div class="input-group m-3">
+        <!-- <label>
+            TimeTable name:
+            <input type="text" name="name">
+        </label> -->
+
+    </div>
+    <div class="row">
+        <a th:if="${timeTableId}" th:each="day: ${days}" class="col card mx-2" th:href="|/timeTable/add?num=${day.getKey()}&groupId=${groupId}&timeTableId=${timeTableId}|">
+            <button th:style="${daysNum.contains(day.getKey())? 'background-color: lime':'background-color: #80bdff'}"
+                    th:disabled="${daysNum.contains(day.getKey())}" th:text="${day.getValue()}"
+                    class="align-content-xl-center border-0 figure">Du
+            </button>
+        </a>
+        <a th:unless="${timeTableId}" th:each="day: ${days}" class="col card mx-2" th:href="|/timeTable/add?num=${day.getKey()}&groupId=${groupId}|">
+            <button th:style="${daysNum.contains(day.getKey())? 'background-color: lime':'background-color: #80bdff'}"
+                    th:disabled="${daysNum.contains(day.getKey())}" th:text="${day.getValue()}"
+                    class="align-content-xl-center border-0 figure">Du
+            </button>
+        </a>
+    </div>
+    <div class="m-4 p-3">
+        <div class="row my-4">
+            <div class="col-3 card-group card bg-secondary mx-lg-5" style="height: 50vh;">
+                <div th:if="${timeTableStudentsOld}" th:each="timeTableStudent:${timeTableStudentsOld}">
+                    <div class="row">
+                        <div th:text="${timeTableStudent.getStudent().firstName+' '+timeTableStudent.getStudent().lastName}"
+                             class="col"></div>
+                        <div class="col">
+                            <a th:href="|/timeTable/add/move/student?timeTableId=${timeTableStudent.getTimeTable().getId()}&timeTableStudentId=${timeTableStudent.getId()}|">
+                                <button class="btn btn-danger"> =></button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 mx-lg-4"></div>
+            <div class="col-3 card-group card bg-secondary mx-lg-5" style="height: 50vh;">
+                <div th:if="${timeTableStudentsNew}" th:each="timeTableStudent:${timeTableStudentsNew}">
+                    <div class="row">
+                        <div class="col">
+                            <a th:href="|/timeTable/add/move/student?timeTableId=${timeTableStudent.getTimeTable().getId()}&timeTableStudentId=${timeTableStudent.getId()}|">
+                                <button class="btn btn-danger"> <=</button>
+                            </a>
+                        </div>
+                        <div th:text="${timeTableStudent.getStudent().firstName+' '+timeTableStudent.getStudent().lastName}"
+                             class="col"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="offset-9">
+        <form action="/timeTable/add" method="post">
+            <button class="btn btn-dark card-body" type="submit" style="width: 100px">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
