@@ -14,12 +14,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity security) throws Exception {
         security.csrf(AbstractHttpConfigurer::disable);
         security.authorizeHttpRequests(m -> {
             m
                     .requestMatchers("/").permitAll()
+                    .requestMatchers("/timeTable/add/**", "/student/add").hasRole("ADMIN")
                     .anyRequest().authenticated();
         });
         security.formLogin(m -> {

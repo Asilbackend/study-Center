@@ -24,11 +24,23 @@ public class Runner implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String ddl;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     @Transactional
     public void run(String... args) throws Exception {
         if (ddl.equals("create")) {
+            Role mentorRole = roleRepository.save(Role.builder().name("ROLE_MENTOR").build());
+            Role adminRole = roleRepository.save(Role.builder().name("ROLE_ADMIN").build());
+            User user1 = User.builder().phone("123").firstName("Anavar").lastName("Zoyirov").password(passwordEncoder.encode("123")).roles(List.of(adminRole)).build();
+            User user2 = User.builder().phone("1234").firstName("Husan").lastName("Choriyev").password(passwordEncoder.encode("123")).roles(List.of(mentorRole)).build();
+            User user3 = User.builder().phone("12345").firstName("Nurbek").lastName("Xujamov").password(passwordEncoder.encode("123")).roles(List.of(mentorRole)).build();
+            User user4 = User.builder().phone("123456").firstName("Samad").lastName("Asadov").password(passwordEncoder.encode("123")).roles(List.of(mentorRole)).build();
+            userRepository.save(user1);
+            userRepository.save(user2);
+            userRepository.save(user3);
+            userRepository.save(user4);
             Student student1 = Student.builder().phone("123").firstName("Anavar").lastName("Zoyirov").password(passwordEncoder.encode("123")).build();
             Student student2 = Student.builder().phone("1234").firstName("Husan").lastName("Choriyev").password(passwordEncoder.encode("123")).build();
             Student student3 = Student.builder().phone("12345").firstName("Nurbek").lastName("Xujamov").password(passwordEncoder.encode("123")).build();
@@ -45,36 +57,6 @@ public class Runner implements CommandLineRunner {
                 groups.add(group);
             }
             List<Group> groupsSaved = groupRepository.saveAll(groups);
-            /*for (Group group : groupsSaved) {
-                List<TimeTable> timeTables = new ArrayList<>();
-                for (int j = 2; j <= 10; j++) {
-                    timeTables.add(TimeTable.builder().group(group).name("module" + j).currentLessonOrder(0).build());
-                }
-                timeTableRepository.saveAll(timeTables);
-            }
-            List<TimeTableStudent> timeTableStudents = new ArrayList<>();
-            for (Student student : studentRepository.findAll()) {
-                timeTableStudents.add(TimeTableStudent.builder().timeTable(timeTableRepository.findAll().get(0)).student(student).build());
-            }
-            addStudents();
-            for (Student student : studentRepository.findAll()) {
-                timeTableStudents.add(TimeTableStudent.builder().timeTable(timeTableRepository.findAll().get(1)).student(student).build());
-            }
-            timeTableStudentRepository.saveAll(timeTableStudents);*/
-
-
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-            /*for (TimeTableStudent timeTableStudent : timeTableStudentRepository.findAll()) {
-                List<StudentAttendance> studentAttendances = new ArrayList<>();
-                for (int i = 1; i <=12; i++) {
-                    studentAttendances.add(StudentAttendance.builder().timeTableStudent(timeTableStudent).hasLesson(false).lessonOrder(i).build());
-                }
-                studentAttendanceRepository.saveAll(studentAttendances);
-            }*/
         }
     }
 

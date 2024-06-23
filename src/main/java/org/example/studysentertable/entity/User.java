@@ -1,7 +1,6 @@
 package org.example.studysentertable.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,16 +14,31 @@ import java.util.Collection;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "users")
 @SuperBuilder
-@Data
-public class Student extends BaseEntity {
+public class User extends BaseEntity implements UserDetails {
+    @Column(unique = true)
+    private String phone;
+    private String password;
     private String firstName;
     private String lastName;
-    private String phone;
+    private Integer age;
     @ManyToOne
     private Attachment attachment;
-    private String password;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.getPhone();
+    }
 }

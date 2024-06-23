@@ -15,13 +15,15 @@
 
     </div>
     <div class="row">
-        <a th:if="${timeTableId}" th:each="day: ${days}" class="col card mx-2" th:href="|/timeTable/add?num=${day.getKey()}&groupId=${groupId}&timeTableId=${timeTableId}|">
+        <a th:if="${timeTableId}" th:each="day: ${days}" class="col card mx-2"
+           th:href="|/timeTable/add?num=${day.getKey()}&groupId=${groupId}&timeTableId=${timeTableId}|">
             <button th:style="${daysNum.contains(day.getKey())? 'background-color: lime':'background-color: #80bdff'}"
                     th:disabled="${daysNum.contains(day.getKey())}" th:text="${day.getValue()}"
                     class="align-content-xl-center border-0 figure">Du
             </button>
         </a>
-        <a th:unless="${timeTableId}" th:each="day: ${days}" class="col card mx-2" th:href="|/timeTable/add?num=${day.getKey()}&groupId=${groupId}|">
+        <a th:unless="${timeTableId}" th:each="day: ${days}" class="col card mx-2"
+           th:href="|/timeTable/add?num=${day.getKey()}&groupId=${groupId}|">
             <button th:style="${daysNum.contains(day.getKey())? 'background-color: lime':'background-color: #80bdff'}"
                     th:disabled="${daysNum.contains(day.getKey())}" th:text="${day.getValue()}"
                     class="align-content-xl-center border-0 figure">Du

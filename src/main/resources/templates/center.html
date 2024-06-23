@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -43,7 +43,7 @@
             </div>
         </div>
         <div>
-            <div class="" style="margin-left: 54px">
+            <div sec:authorize="hasRole('ADMIN')" class="" style="margin-left: 54px">
                 <form action="/timeTable/add">
                     <input type="hidden" name="groupId" th:value="${groupId}">
                     <input th:if="${timeTable}" type="hidden" name="timeTableId" th:value="${timeTable.getId()}">
@@ -71,7 +71,7 @@
                         </div>
                     </form>
                 </div>
-                <div th:if="${timeTable.getStatus().equals('START')}" th:each="lesson:${lessons}"
+                <div  th:if="${timeTable.getStatus().equals('START')}" th:each="lesson:${lessons}"
                      class="col card my-1 mx-2"
                      style="background-color: #abdde5">
                     <div class="row">
@@ -145,7 +145,7 @@
                     </form>
                 </div>
             </div>
-            <div th:if="${timeTable}">
+            <div sec:authorize="hasRole('ADMIN')" th:if="${timeTable}">
                 <div class="row" th:if="${timeTable.getStatus().equals('STOP')}">
                     <div class="col-4">
                         <div class="row">
